@@ -26,6 +26,6 @@ stages:
         command: buildAndPush
         repository: $(imageRepository)
         dockerfile: '**/Dockerfile'
-        containerRegistry: $(dockerRegistryServiceConnection)
+        containerRegistry: dockerRegistryServiceConnection
         tags: |
           $(tag)
