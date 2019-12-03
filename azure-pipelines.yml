@@ -4,6 +4,8 @@
 
 trigger:
 - master
+- dev
+- release
 
 resources:
 - repo: self
@@ -29,3 +31,18 @@ stages:
         containerRegistry: dockerRegistryServiceConnection
         tags: |
           $(tag)
+
+  - stage: Deploy
+    jobs:
+    - job: DeployDev
+      pool:
+        vmImage: 'ubuntu-16.04'
+      condition: and(succeeded(), startsWith(variables['Build.SourceBranch'], 'refs/heads/dev'))
+      steps:
+      - script: echo dev
+    - job: DeployMaster
+      pool:
+        vmImage: 'ubuntu-16.04'
+      condition: and(succeeded(), startsWith(variables['Build.SourceBranch'], 'refs/heads/master'))
+      steps:
+      - script: echo master
