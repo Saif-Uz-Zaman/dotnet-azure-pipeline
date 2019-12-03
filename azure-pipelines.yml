@@ -31,7 +31,6 @@ stages:
         containerRegistry: dockerRegistryServiceConnection
         tags: |
           $(tag)
-
   - stage: Deploy
     jobs:
     - job: DeployDev
