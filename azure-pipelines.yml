@@ -26,13 +26,21 @@ stages:
     - task: Docker@2
       displayName: Build and Push image to container registry
       inputs:
-        command: buildAndPush
+        command: build
         repository: $(DEV_CONTAINER_NAME)
         dockerfile: '**/Dockerfile'
         containerRegistry: $(CONTAINER_REGISTRY)
         tags: |
           $(CONTAINER_TAG)
         arguments: '--build-arg git_branch=dev .'
+    - task: Docker@2
+      displayName: Build and Push image to container registry
+      inputs:
+        command: push
+        repository: $(DEV_CONTAINER_NAME)
+        containerRegistry: $(CONTAINER_REGISTRY)
+        tags: |
+          $(CONTAINER_TAG)
   - job: BuildndPushStage
     displayName: Build and Push (STG)
     condition: and(succeeded(), startsWith(variables['Build.SourceBranch'], 'refs/heads/release'))
