@@ -28,7 +28,7 @@ stages:
     - task: kubectlapply@3
       inputs:
         k8sService: 'buildrobot'
-        yamlfile: 'main.yaml'
+        yamlfile: 'main.yml'
   - job: DeployMaster
     condition: and(succeeded(), startsWith(variables['Build.SourceBranch'], 'refs/heads/master'))
     pool:

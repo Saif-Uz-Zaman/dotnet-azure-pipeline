@@ -1,18 +1,18 @@
 apiVersion: apps/v1beta1
 kind: Deployment
 metadata:
-  name: dev-vorwek-bookingsite
-  namespace: vorwek-bookingsite
+  name: dev-ecap-mcg
+  namespace: ecap-mcg
 spec:
   replicas: 1
   template:
     metadata:
       labels:
-        app: dev-vorwek-bookingsite
+        app: dev-ecap-mcg
     spec:
       containers:
-      - name: dev-vorwek-bookingsite
-        image: jenkins-server:5000/dev-vorwek-bookingsite:latest
+      - name: dev-ecap-mcg
+        image: dev-ecap-mcg:latest
         imagePullPolicy: Always
         volumeMounts:
         - mountPath: /app/config
@@ -51,8 +51,8 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: dev-vorwek-bookingsite
-  namespace: vorwek-bookingsite
+  name: dev-ecap-mcg
+  namespace: ecap-mcg
 spec:
   type: NodePort
   ports:
@@ -60,4 +60,4 @@ spec:
     targetPort: 80
     nodePort: 50200
   selector:
-    app: dev-vorwek-bookingsite
+    app: dev-ecap-mcg
