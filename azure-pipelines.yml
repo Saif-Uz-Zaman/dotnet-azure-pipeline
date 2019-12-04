@@ -12,6 +12,8 @@ resources:
 
 variables:
   tag: '$(Build.BuildId)'
+  containerRegistry: dockerRegistryServiceConnection
+  imageRepository: ecap-service
 
 stages:
 - stage: Build
@@ -26,8 +28,11 @@ stages:
       displayName: Build an image
       inputs:
         command: build
-        repository: ecap-service
+        repository: $(imageRepository)
         dockerfile: '**/Dockerfile'
+        tags: |
+          $(tag)
+        arguments: '--build-arg PAT=$(AzureDevOpsPAT) -t $(containerRegistry)/$(imageRepository):$(imageTag)'
   - job: Push
     displayName: Push
     dependsOn: Build
@@ -38,9 +43,9 @@ stages:
       displayName: Push an image to container registry
       inputs:
         command: push
-        repository: ecap-service
+        repository: $(imageRepository)
         dockerfile: '**/Dockerfile'
-        containerRegistry: dockerRegistryServiceConnection
+        containerRegistry: $(containerRegistry)
         tags: |
           $(tag)
 - stage: Deploy
