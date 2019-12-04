@@ -11,13 +11,28 @@ resources:
 - repo: self
 
 variables:
-- template: pipeline/variables/vars.yml
+  tag: '$(Build.BuildId)'
+  containerRegistry: dockerRegistryServiceConnection
+  imageRepository: ecap-service
 
 stages:
 - stage: Build
   displayName: Docker Image
   jobs:
-  - template: pipeline/templates/branch-build-push-jobs.yml
+  - job: BuildndPush
+    displayName: Build and Push
+    pool:
+      vmImage: 'ubuntu-16.04'
+    steps:
+    - task: Docker@2
+      displayName: Build and Push image to container registry
+      inputs:
+        command: buildAndPush
+        repository: $(imageRepository)
+        dockerfile: '**/Dockerfile'
+        containerRegistry: $(containerRegistry)
+        tags: |
+          $(tag)
 - stage: Deploy
   jobs:
   - job: DeployDev
