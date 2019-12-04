@@ -32,7 +32,7 @@ stages:
         containerRegistry: $(CONTAINER_REGISTRY)
         tags: |
           $(CONTAINER_TAG)
-        arguments: '--build-arg git_branch=dev .'
+        arguments: '--build-arg git_branch=dev'
     - task: Docker@2
       displayName: Build and Push image to container registry
       inputs:
