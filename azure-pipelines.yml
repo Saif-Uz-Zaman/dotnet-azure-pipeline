@@ -32,7 +32,7 @@ stages:
         containerRegistry: $(CONTAINER_REGISTRY)
         tags: |
           $(CONTAINER_TAG)
-        arguments: '--build-arg git_branch=dev'
+        arguments: '--build-arg git_branch=dev .'
   - job: BuildndPushStage
     displayName: Build and Push (STG)
     condition: and(succeeded(), startsWith(variables['Build.SourceBranch'], 'refs/heads/release'))

@@ -1,7 +1,7 @@
 FROM microsoft/dotnet:2.2-sdk AS build-env
 WORKDIR /src
 
-ARG git_branch=master
+ARG git_branch
 RUN echo "hello ${git_branch}"
 
 # Copy only .csproj and restore
