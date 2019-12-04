@@ -4,6 +4,9 @@ jobs:
   condition: and(succeeded(), startsWith(variables['Build.SourceBranch'], 'refs/heads/dev'))
   pool:
     vmImage: 'ubuntu-16.04'
+  variables:
+    repoEnv: dev
+    containerName: $(DEV_CONTAINER_NAME)
   steps:
   - template: /pipeline/templates/docker-build-push-steps.yml
 - job: BuildndPushStage
@@ -11,6 +14,9 @@ jobs:
   condition: and(succeeded(), startsWith(variables['Build.SourceBranch'], 'refs/heads/release'))
   pool:
     vmImage: 'ubuntu-16.04'
+  variables:
+    repoEnv: stg
+    containerName: $(STG_CONTAINER_NAME)
   steps:
   - template: /pipeline/templates/docker-build-push-steps.yml
 - job: BuildndPushProd
@@ -18,5 +24,8 @@ jobs:
   condition: and(succeeded(), startsWith(variables['Build.SourceBranch'], 'refs/heads/master'))
   pool:
     vmImage: 'ubuntu-16.04'
+  variables:
+    repoEnv: prod
+    containerName: $(PROD_CONTAINER_NAME)
   steps:
   - template: /pipeline/templates/docker-build-push-steps.yml
