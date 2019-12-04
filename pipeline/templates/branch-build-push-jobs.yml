@@ -5,18 +5,18 @@ jobs:
   pool:
     vmImage: 'ubuntu-16.04'
   steps:
-  - template: pipeline/templates/docker-build-push-steps.yml
+  - template: /pipeline/templates/docker-build-push-steps.yml
 - job: BuildndPushStage
   displayName: Build and Push (STG)
   condition: and(succeeded(), startsWith(variables['Build.SourceBranch'], 'refs/heads/release'))
   pool:
     vmImage: 'ubuntu-16.04'
   steps:
-  - template: pipeline/templates/docker-build-push-steps.yml
+  - template: /pipeline/templates/docker-build-push-steps.yml
 - job: BuildndPushProd
   displayName: Build and Push (PROD)
   condition: and(succeeded(), startsWith(variables['Build.SourceBranch'], 'refs/heads/master'))
   pool:
     vmImage: 'ubuntu-16.04'
   steps:
-  - template: pipeline/templates/docker-build-push-steps.yml
+  - template: /pipeline/templates/docker-build-push-steps.yml

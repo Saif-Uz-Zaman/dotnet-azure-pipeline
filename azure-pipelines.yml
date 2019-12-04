@@ -17,7 +17,7 @@ stages:
 - stage: Build
   displayName: Docker Image
   jobs:
-  - template: pipeline/templates/branch-build-push-jobs.yml
+  - template: /pipeline/templates/branch-build-push-jobs.yml
 - stage: Deploy
   jobs:
   - job: DeployDev
