@@ -1,0 +1,63 @@
+apiVersion: apps/v1beta1
+kind: Deployment
+metadata:
+  name: dev-vorwek-bookingsite
+  namespace: vorwek-bookingsite
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: dev-vorwek-bookingsite
+    spec:
+      containers:
+      - name: dev-vorwek-bookingsite
+        image: jenkins-server:5000/dev-vorwek-bookingsite:latest
+        imagePullPolicy: Always
+        volumeMounts:
+        - mountPath: /app/config
+          name: ecap-config-volume
+        - mountPath: /app/keys/public-key
+          name: pub-key
+        - mountPath: /app/ecaplog
+          name: ecap-logs
+          readOnly: false
+        ports:
+        - containerPort: 80
+          name: dserviceport
+        env:
+        - name: "ASPNETCORE_ENVIRONMENT"
+          value: "dev"
+        resources:
+          requests:
+            memory: "70Mi"
+            cpu: "40m"
+          limits:
+            memory: "100Mi"
+            cpu: "80m"
+      # imagePullSecrets:
+      # - name: itsm-private-repo
+      volumes:
+      - name: ecap-config-volume
+        hostPath:
+          path: /nfs/config/ecap-config
+      - name: pub-key
+        hostPath:
+          path: /nfs/env/keys/public-key
+      - name: ecap-logs
+        hostPath:
+          path: /nfs/logs/containerlogs/itsm
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: dev-vorwek-bookingsite
+  namespace: vorwek-bookingsite
+spec:
+  type: NodePort
+  ports:
+  - port: 80
+    targetPort: 80
+    nodePort: 50200
+  selector:
+    app: dev-vorwek-bookingsite
