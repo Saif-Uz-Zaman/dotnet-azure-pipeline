@@ -27,7 +27,7 @@ stages:
       displayName: Build and Push image to container registry
       inputs:
         command: buildAndPush
-        repository: $(imageRepository)
+        repository: $(DEV_CONTAINER_NAME)
         dockerfile: '**/Dockerfile'
         containerRegistry: $(CONTAINER_REGISTRY)
         tags: |
@@ -43,7 +43,7 @@ stages:
       displayName: Build and Push image to container registry
       inputs:
         command: buildAndPushProd
-        repository: $(imageRepository)
+        repository: $(STG_CONTAINER_NAME)
         dockerfile: '**/Dockerfile'
         containerRegistry: $(CONTAINER_REGISTRY)
         tags: |
@@ -58,7 +58,7 @@ stages:
       displayName: Build and Push image to container registry
       inputs:
         command: buildAndPush
-        repository: $(imageRepository)
+        repository: $(PROD_CONTAINER_NAME)
         dockerfile: '**/Dockerfile'
         containerRegistry: $(CONTAINER_REGISTRY)
         tags: |
