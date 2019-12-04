@@ -17,7 +17,7 @@ stages:
 - stage: Build
   displayName: Docker Image
   jobs:
-  - job: BuildndPush
+  - job: BuildndPushDev
     displayName: Build and Push (DEV)
     condition: and(succeeded(), startsWith(variables['Build.SourceBranch'], 'refs/heads/dev'))
     pool:
@@ -33,7 +33,7 @@ stages:
         tags: |
           $(tag)
         arguments: '--build-arg git_branch=$(Build.SourceBranch)'
-  - job: BuildndPush
+  - job: BuildndPushStage
     displayName: Build and Push (STG)
     condition: and(succeeded(), startsWith(variables['Build.SourceBranch'], 'refs/heads/release'))
     pool:
@@ -42,7 +42,7 @@ stages:
     - task: Docker@2
       displayName: Build and Push image to container registry
       inputs:
-        command: buildAndPush
+        command: buildAndPushProd
         repository: $(imageRepository)
         dockerfile: '**/Dockerfile'
         containerRegistry: $(containerRegistry)
