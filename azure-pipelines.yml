@@ -31,7 +31,7 @@ stages:
         dockerfile: '**/Dockerfile'
         containerRegistry: $(CONTAINER_REGISTRY)
         tags: |
-          $(tag)
+          $(CONTAINER_TAG)
         arguments: '--build-arg git_branch=$(Build.SourceBranch)'
   - job: BuildndPushStage
     displayName: Build and Push (STG)
@@ -47,7 +47,7 @@ stages:
         dockerfile: '**/Dockerfile'
         containerRegistry: $(CONTAINER_REGISTRY)
         tags: |
-          $(tag)
+          $(CONTAINER_TAG)
   - job: BuildndPush
     displayName: Build and Push (PROD)
     condition: and(succeeded(), startsWith(variables['Build.SourceBranch'], 'refs/heads/master'))
@@ -62,7 +62,7 @@ stages:
         dockerfile: '**/Dockerfile'
         containerRegistry: $(CONTAINER_REGISTRY)
         tags: |
-          $(tag)
+          $(CONTAINER_TAG)
 - stage: Deploy
   jobs:
   - job: DeployDev
