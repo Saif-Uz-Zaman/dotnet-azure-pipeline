@@ -1,0 +1,49 @@
+# Docker
+# Build a Docker image 
+# https://docs.microsoft.com/azure/devops/pipelines/languages/docker
+
+trigger:
+- master
+- dev
+- release
+
+resources:
+- repo: self
+
+variables:
+  tag: '$(Build.BuildId)'
+  containerRegistry: dockerRegistryServiceConnection
+  imageRepository: ecap-service
+
+stages:
+- stage: Build
+  displayName: Docker Image
+  jobs:
+  - job: BuildndPush
+    displayName: Build and Push
+    pool:
+      vmImage: 'ubuntu-16.04'
+    steps:
+    - task: Docker@2
+      displayName: Build and Push image to container registry
+      inputs:
+        command: buildAndPush
+        repository: $(imageRepository)
+        dockerfile: '**/Dockerfile'
+        containerRegistry: $(containerRegistry)
+        tags: |
+          $(tag)
+- stage: Deploy
+  jobs:
+  - job: DeployDev
+    condition: and(succeeded(), startsWith(variables['Build.SourceBranch'], 'refs/heads/dev'))
+    pool:
+      vmImage: 'ubuntu-16.04'
+    steps:
+    - script: echo dev
+  - job: DeployMaster
+    condition: and(succeeded(), startsWith(variables['Build.SourceBranch'], 'refs/heads/master'))
+    pool:
+      vmImage: 'ubuntu-16.04'
+    steps:
+    - script: echo master
