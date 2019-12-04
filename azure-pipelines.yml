@@ -30,6 +30,7 @@ stages:
         dockerfile: '**/Dockerfile'
   - job: Push
     displayName: Push
+    dependsOn: Build
     pool:
       vmImage: 'ubuntu-16.04'
     steps:
