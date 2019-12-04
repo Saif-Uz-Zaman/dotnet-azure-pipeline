@@ -32,7 +32,7 @@ stages:
         dockerfile: '**/Dockerfile'
         tags: |
           $(tag)
-        arguments: '--build-arg PAT=$(AzureDevOpsPAT) -t $(containerRegistry)/$(imageRepository):$(imageTag)'
+        arguments: '--build-arg PAT=$(AzureDevOpsPAT) -t $(containerRegistry)/$(imageRepository):$(tag)'
   - job: Push
     displayName: Push
     dependsOn: Build
