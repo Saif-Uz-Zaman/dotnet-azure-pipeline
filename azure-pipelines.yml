@@ -35,8 +35,13 @@ stages:
     pool:
       vmImage: 'ubuntu-16.04'
     steps:
-    - task: kubectlgeneral@3
-      inputs:
-        k8sService: 'buildrobot'
-        subCommand: 'get'
-        arguments: 'nodes'
+      - task: downloader@1
+        inputs:
+          k8sService: 'buildrobot'
+          hasIstio: false
+          hasHelm: false
+      - task: kubectlgeneral@3
+        inputs:
+          k8sService: 'buildrobot'
+          subCommand: 'get'
+          arguments: 'nodes'
